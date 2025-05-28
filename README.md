@@ -44,7 +44,7 @@ source .venv/bin/activate
 uv sync
 ```
 
-The app uses OpenAI LLM API. You need to create an API key and save it to an `.env` file. At the moment, the app assumes that your key is saved to `.env_example`.
+The app uses the OpenAI LLM API. You need to create an API key and save it to an `.env` file. At the moment, the app assumes that your key is saved to `.env_example`.
 
 ## Running the App
 
