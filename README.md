@@ -88,6 +88,7 @@ We welcome feedback and contributions. [Email us](mailto:datashop@statistik.zh.c
 We use [Ruff](https://docs.astral.sh/ruff/) for linting and code formatting.
 
 Install pre-commit hooks for automatic checks before opening a pull request:
+
 ```bash
 pre-commit install
 ```
@@ -98,4 +99,4 @@ This project is licensed under the MIT License. See [LICENSE](LICENSE) for detai
 
 ## Disclaimer
 
-This software (the Software) incorporates the open-source model `de_core_news` (the Model) from spacy.io and has been developed according to and with the intent to be used under Swiss law. Please be aware that the EU Artificial Intelligence Act (EU AI Act) may, under certain circumstances, be applicable to your use of the Software. You are solely responsible for ensuring that your use of the Software as well as of the underlying Model complies with all applicable local, national and international laws and regulations. By using this Software, you acknowledge and agree (a) that it is your responsibility to assess which laws and regulations, in particular regarding the use of AI technologies, are applicable to your intended use and to comply therewith, and (b) that you will hold us harmless from any action, claims, liability or loss in respect of your use of the Software.
+This software (the Software) has been developed according to and with the intent to be used under Swiss law. Please be aware that the EU Artificial Intelligence Act (EU AI Act) may, under certain circumstances, be applicable to your use of the Software. You are solely responsible for ensuring that your use of the Software complies with all applicable local, national and international laws and regulations. By using this Software, you acknowledge and agree (a) that it is your responsibility to assess which laws and regulations, in particular regarding the use of AI technologies, are applicable to your intended use and to comply therewith, and (b) that you will hold us harmless from any action, claims, liability or loss in respect of your use of the Software.
