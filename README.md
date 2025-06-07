@@ -1,6 +1,6 @@
 # Simply Create Glossaries in Plain Language
 
-**Create Plain Language glossaries from texts, URLs, and files using LLMs.**
+**Create Plain Language Glossaries from texts, URLs, and files using LLMs.**
 
 ![GitHub License](https://img.shields.io/github/license/machinelearningZH/simply-simplify-language-glossarizer)
 [![PyPI - Python](https://img.shields.io/badge/python-v3.9+-blue.svg)](https://github.com/machinelearningZH/simply-simplify-language-glossarizer)
@@ -27,8 +27,8 @@
 
 ## Features
 
-- **Automated Glossary Creation**: Generate glossaries that simplify complex terms and concepts to [Plain Language in German](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten/inhalt/barrierefreiheit/regeln-fuer-leichte-sprache.html).
-- **Multiple Input Sources**: Process text from **direct text input**, **URLs**, or **.txt file uploads**.
+- **Automated glossary creation**: Generate glossaries that simplify complex terms and concepts to [Plain Language in German](https://www.zh.ch/de/webangebote-entwickeln-und-gestalten/inhalt/barrierefreiheit/regeln-fuer-leichte-sprache.html).
+- **Multiple input sources**: Process text from **direct text input**, **URLs**, or **.txt file uploads**.
 
 ## Installation
 
@@ -44,7 +44,7 @@ source .venv/bin/activate
 uv sync
 ```
 
-The app uses the OpenAI LLM API. You need to create an API key and save it to an `.env` file. At the moment, the app assumes that your key is saved to `.env_example`.
+The app uses the OpenAI LLM API. Create an API key and save it to an `.env` file. At the moment, the app assumes that your key is saved to `.env_example`.
 
 ## Running the App
 
@@ -61,13 +61,13 @@ The app will be available at `http://localhost:8501/`.
 > Be cautious with sensitive data as mentioned in the app warning. Use only for public, non-sensitive information as processing occurs on third-party servers.
 
 > [!NOTE]
-> At the moment only .txt files work with the file upload.
+> Currently, only .txt files are supported by the file upload feature.
 
 ## Project Information
 
-In Swiss administrative contexts, there's an increasing need to make complex documents and specialized terminology more accessible to the general public. This tool helps address that need by generating glossaries that explain difficult terms in Plain Language.
+Government agencies and other organisations in Switzerland are increasingly recognising the  need to make complex documents and specialized terminology more accessible to the general public. This tool helps address that need by generating glossaries that explain difficult terms in Plain Language.
 
-- Users can create simplified language glossaries from various text sources.
+- Users can create simplified language glossaries from various sources.
 - The tool uses large language models (LLMs) to identify complex terms and generate clear, accessible explanations.
 - It produces a draft glossary that **should always be reviewed and refined by users** before publication.
 - For each term, the app provides two types of explanations:
