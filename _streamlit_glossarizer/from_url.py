@@ -35,8 +35,7 @@ if "from_url_current_text" in st.session_state:
         )
         if (
             st.session_state.from_url_extracted_terms
-            and st.session_state.from_url_extracted_terms
-            != ["Keine Begriffe gefunden"]
+            and st.session_state.from_url_extracted_terms != ["Keine Begriffe gefunden"]
         ):
             st.success(
                 f"{len(st.session_state.from_url_extracted_terms)} Begriffe gefunden."

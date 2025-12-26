@@ -1,9 +1,9 @@
 [project]
 name = "glossarizer"
-version = "0.1.0"
+version = "0.2.0"
 description = 'Create Plain Language glossaries from texts, URLs, and files using LLMs.'
 readme = "README.md"
-requires-python = ">=3.9,<=3.12"
+requires-python = ">=3.12"
 license = "MIT"
 
 authors = [
@@ -11,13 +11,12 @@ authors = [
 ]
 
 dependencies = [
-    "openai>=1.78.0",
+    "openai>=2.14.0",
     "pandas>=2.2.3",
-    "pre-commit>=4.2.0",
-    "pydantic>=2.11.4",
-    "python-dotenv>=1.1.0",
-    "requests>=2.32.3",
-    "streamlit>=1.45.0",
-    "xlsxwriter>=3.2.3",
+    "pydantic>=2.12.5",
+    "python-dotenv>=1.2.1",
+    "requests>=2.32.5",
+    "streamlit>=1.52.2",
+    "xlsxwriter>=3.2.9",
 ]
 

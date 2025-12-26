@@ -3,7 +3,7 @@
 **Create Plain Language Glossaries from texts, URLs, and files using LLMs.**
 
 ![GitHub License](https://img.shields.io/github/license/machinelearningZH/simply-simplify-language-glossarizer)
-[![PyPI - Python](https://img.shields.io/badge/python-v3.9+-blue.svg)](https://github.com/machinelearningZH/simply-simplify-language-glossarizer)
+[![PyPI - Python](https://img.shields.io/badge/python-v3.12+-blue.svg)](https://github.com/machinelearningZH/simply-simplify-language-glossarizer)
 [![GitHub Stars](https://img.shields.io/github/stars/machinelearningZH/simply-simplify-language-glossarizer.svg)](https://github.com/machinelearningZH/simply-simplify-language-glossarizer/stargazers)
 [![GitHub Issues](https://img.shields.io/github/issues/machinelearningZH/simply-simplify-language-glossarizer.svg)](https://github.com/machinelearningZH/simply-simplify-language-glossarizer/issues)
 [![GitHub Issues](https://img.shields.io/github/issues-pr/machinelearningZH/simply-simplify-language-glossarizer.svg)](https://img.shields.io/github/issues-pr/machinelearningZH/simply-simplify-language-glossarizer)

@@ -17,7 +17,11 @@ Diese App findet schwer verständliche Begriffe in Texten und erstellt Erklärun
 """)
 
 
-uploaded_file = st.file_uploader("Datei auswählen", type=["txt"], help="Lade eine .txt-Datei hoch, die den zu verarbeitenden Text enthält.")
+uploaded_file = st.file_uploader(
+    "Datei auswählen",
+    type=["txt"],
+    help="Lade eine .txt-Datei hoch, die den zu verarbeitenden Text enthält.",
+)
 
 process_file_button = st.button("Schritt 1: .txt-Datei verarbeiten", key="process_file")
 if process_file_button and uploaded_file is not None:

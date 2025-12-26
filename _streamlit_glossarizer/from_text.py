@@ -113,7 +113,9 @@ if "from_text_current_text" in st.session_state:
                 df.sort_values(by="Begriff", inplace=True)
                 df.reset_index(drop=True, inplace=True)
             except Exception as e:
-                st.error(f"Fehler beim Verarbeiten der Daten: {e}. Bitte versuche es erneut.")
+                st.error(
+                    f"Fehler beim Verarbeiten der Daten: {e}. Bitte versuche es erneut."
+                )
                 st.stop()
 
             # Display results

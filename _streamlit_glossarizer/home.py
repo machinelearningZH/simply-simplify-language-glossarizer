@@ -14,8 +14,8 @@ st.set_page_config(
 pg.run()
 
 USER_WARNING = """
-⚠️ :red[**Achtung: Nutze die App nur für öffentliche, nicht sensible Daten, da diese auf externen Rechnern von Drittanbietern verarbeitet werden**] (OpenAI, Jina AI uw.).<br><sub>Diese App liefert lediglich einen Entwurf. Überprüfe das Ergebnis immer und passe es an, wenn nötig. Aktuelle App-Version ist v0.1.0. Die letzte Aktualisierung war am 28.5.2025.
-"""
+⚠️ :red[**Achtung: Nutze die App nur für öffentliche, nicht sensible Daten, da diese auf externen Rechnern von Drittanbietern verarbeitet werden**] (OpenAI, Jina AI uw.).<br><sub>Diese App liefert lediglich einen Entwurf. Überprüfe das Ergebnis immer und passe es an, wenn nötig. Aktuelle App-Version ist v0.2.0. Die letzte Aktualisierung war am 23.12.2025.
+""".strip()
 
 with st.sidebar:
     st.caption(USER_WARNING, unsafe_allow_html=True)
