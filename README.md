@@ -65,7 +65,7 @@ The app will be available at `http://localhost:8501/`.
 
 ## Project Information
 
-Government agencies and other organisations in Switzerland are increasingly recognising the  need to make complex documents and specialized terminology more accessible to the general public. This tool helps address that need by generating glossaries that explain difficult terms in Plain Language.
+Government agencies and other organisations in Switzerland are increasingly recognising the need to make complex documents and specialized terminology more accessible to the general public. This tool helps address that need by generating glossaries that explain difficult terms in Plain Language.
 
 - Users can create simplified language glossaries from various sources.
 - The tool uses large language models (LLMs) to identify complex terms and generate clear, accessible explanations.
@@ -86,12 +86,6 @@ Government agencies and other organisations in Switzerland are increasingly reco
 We welcome feedback and contributions. [Email us](mailto:datashop@statistik.zh.ch) or open an issue or pull request.
 
 We use [Ruff](https://docs.astral.sh/ruff/) for linting and code formatting.
-
-Install pre-commit hooks for automatic checks before opening a pull request:
-
-```bash
-pre-commit install
-```
 
 ## License
 
