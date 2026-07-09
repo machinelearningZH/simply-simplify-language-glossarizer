@@ -79,7 +79,7 @@ Government agencies and other organisations in Switzerland are increasingly reco
 ## Project Team
 
 - **Simone Luchetta** — [Staatskanzlei Zürich: Team Informationszugang & Dialog](https://www.zh.ch/de/staatskanzlei/digitale-verwaltung/team.html)
-- **Chantal Amrhein**, **Patrick Arnecke** — [Statistisches Amt Zürich: Team Data](https://www.zh.ch/de/direktion-der-justiz-und-des-innern/statistisches-amt/data.html)
+- **Chantal Amrhein**, **Patrick Arnecke** — [Amt für Statistik und Daten: Team Data](https://www.zh.ch/de/direktion-der-justiz-und-des-innern/amt-fuer-statistik-und-daten.html)
 
 ## Feedback and Contributing
 
