@@ -174,3 +174,6 @@ cython_debug/
 .pypirc
 _streamlit_glossarizer/.DS_Store
 .DS_Store
+
+# Local Git worktrees
+.worktrees/
