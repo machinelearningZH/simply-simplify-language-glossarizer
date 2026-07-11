@@ -1,6 +1,7 @@
 import os
 from collections.abc import Mapping
 from dataclasses import dataclass, field
+from math import isfinite
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -53,7 +54,7 @@ def _validate_temperature(value: object) -> float:
     if isinstance(value, bool) or not isinstance(value, int | float):
         raise SettingsError("temperature must be a number from 0 to 2")
     result = float(value)
-    if not 0 <= result <= 2:
+    if not isfinite(result) or not 0 <= result <= 2:
         raise SettingsError("temperature must be a number from 0 to 2")
     return result
 
@@ -68,7 +69,7 @@ def _validate_timeout(value: object) -> float:
     if isinstance(value, bool) or not isinstance(value, int | float):
         raise SettingsError("timeout_seconds must be a positive number")
     result = float(value)
-    if result <= 0:
+    if not isfinite(result) or result <= 0:
         raise SettingsError("timeout_seconds must be a positive number")
     return result
 
@@ -77,30 +78,6 @@ def _validate_max_retries(value: object) -> int:
     if isinstance(value, bool) or not isinstance(value, int) or value < 0:
         raise SettingsError("max_retries must be a non-negative integer")
     return value
-
-
-def _yaml_error_field(config_text: str, error: yaml.YAMLError) -> str | None:
-    lines = config_text.splitlines()
-    field_names = {
-        "base_url",
-        "model",
-        "temperature",
-        "max_output_tokens",
-        "timeout_seconds",
-        "max_retries",
-    }
-    for line in lines:
-        field_name = line.split(":", maxsplit=1)[0]
-        if field_name in field_names:
-            return field_name
-    for mark_name in ("context_mark", "problem_mark"):
-        mark = getattr(error, mark_name, None)
-        if mark is None or mark.line >= len(lines):
-            continue
-        field_name = lines[mark.line].strip().split(":", maxsplit=1)[0]
-        if field_name in field_names:
-            return field_name
-    return None
 
 
 def load_openrouter_settings(
@@ -146,11 +123,7 @@ def load_openrouter_settings(
     except OSError as error:
         raise SettingsError(f"Unable to read configuration: {config_path}") from error
     except yaml.YAMLError as error:
-        field_name = _yaml_error_field(config_text, error)
-        detail = f" near {field_name}" if field_name else ""
-        raise SettingsError(
-            f"Invalid YAML configuration{detail}: {config_path}"
-        ) from error
+        raise SettingsError(f"Invalid YAML configuration: {config_path}") from error
     except KeyError as error:
         raise SettingsError(f"Missing configuration field: {error.args[0]}") from error
     except (TypeError, ValueError) as error:

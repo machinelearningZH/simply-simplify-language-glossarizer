@@ -57,13 +57,37 @@ def test_load_openrouter_settings_rejects_missing_key(tmp_path, monkeypatch):
         load_openrouter_settings(config_path, tmp_path / "missing.env")
 
 
+def test_load_openrouter_settings_reports_invalid_yaml_concisely(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text("openrouter: [\n", encoding="utf-8")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "secret-key")
+
+    with pytest.raises(SettingsError, match="Invalid YAML configuration"):
+        load_openrouter_settings(config_path, tmp_path / ".env")
+
+
 @pytest.mark.parametrize(
     ("replacement", "message"),
     [
         ("temperature: -1", "temperature"),
+        ("temperature: 3", "temperature"),
+        ("temperature: true", "temperature"),
+        ("temperature: .nan", "temperature"),
+        ("temperature: .inf", "temperature"),
         ("max_output_tokens: 0", "max_output_tokens"),
+        ("max_output_tokens: 1.5", "max_output_tokens"),
+        ("max_output_tokens: true", "max_output_tokens"),
         ("timeout_seconds: 0", "timeout_seconds"),
+        ("timeout_seconds: true", "timeout_seconds"),
+        ("timeout_seconds: .nan", "timeout_seconds"),
+        ("timeout_seconds: .inf", "timeout_seconds"),
         ("max_retries: -1", "max_retries"),
+        ("max_retries: 1.5", "max_retries"),
+        ("max_retries: true", "max_retries"),
+        ("base_url: http://openrouter.ai/api/v1", "base_url"),
+        ("base_url: 42", "base_url"),
+        ("model: '   '", "model"),
+        ("model: 42", "model"),
     ],
 )
 def test_load_openrouter_settings_rejects_invalid_values(
@@ -74,7 +98,9 @@ def test_load_openrouter_settings_rejects_invalid_values(
     text = config_path.read_text(encoding="utf-8")
     key = replacement.split(":", maxsplit=1)[0]
     text = "\n".join(
-        replacement if line.strip().startswith(f"{key}:") else line
+        f"{line[: len(line) - len(line.lstrip())]}{replacement}"
+        if line.strip().startswith(f"{key}:")
+        else line
         for line in text.splitlines()
     )
     config_path.write_text(text, encoding="utf-8")
