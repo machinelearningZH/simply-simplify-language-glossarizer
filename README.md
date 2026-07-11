@@ -44,7 +44,16 @@ source .venv/bin/activate
 uv sync
 ```
 
-The app uses the OpenAI LLM API. Create an API key and save it to an `.env` file. At the moment, the app assumes that your key is saved to `.env_example`.
+Create an OpenRouter API key at <https://openrouter.ai/settings/keys>. Then create
+`_streamlit_glossarizer/.env` with the following content:
+
+```dotenv
+OPENROUTER_API_KEY=your-api-key
+```
+
+Select the model and tune non-secret request settings in
+`_streamlit_glossarizer/config.yaml`. The selected model must support JSON Schema
+structured outputs.
 
 ## Running the App
 

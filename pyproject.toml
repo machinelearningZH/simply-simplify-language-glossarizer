@@ -15,6 +15,7 @@ dependencies = [
     "pandas>=2.2.3",
     "pydantic>=2.12.5",
     "python-dotenv>=1.2.1",
+    "pyyaml>=6.0.3",
     "requests>=2.32.5",
     "streamlit>=1.55.0",
     "xlsxwriter>=3.2.9",
@@ -22,3 +23,12 @@ dependencies = [
 
 [tool.uv]
 exclude-newer = "7 days"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.15.20",
+]
