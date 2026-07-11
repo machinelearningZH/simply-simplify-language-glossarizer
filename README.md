@@ -45,23 +45,24 @@ uv sync
 ```
 
 Create an OpenRouter API key at <https://openrouter.ai/settings/keys>. Then create
-`_streamlit_glossarizer/.env` with the following content:
+`.env` in the repository root with the following content:
 
 ```dotenv
 OPENROUTER_API_KEY=your-api-key
 ```
 
 Select the model and tune non-secret request settings in
-`_streamlit_glossarizer/config.yaml`. The selected model must support JSON Schema
+`config.yaml` in the repository root. The selected model must support JSON Schema
 structured outputs.
 
 ## Running the App
 
 Start the Streamlit app:
 
+Run this command from the repository root:
+
 ```bash
-cd _streamlit_glossarizer
-streamlit run home.py
+uv run streamlit run src/home.py
 ```
 
 The app will be available at `http://localhost:8501/`.

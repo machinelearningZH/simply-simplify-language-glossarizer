@@ -9,8 +9,9 @@ import yaml
 from dotenv import dotenv_values
 
 MODULE_DIR = Path(__file__).resolve().parent
-CONFIG_PATH = MODULE_DIR / "config.yaml"
-ENV_PATH = MODULE_DIR / ".env"
+PROJECT_DIR = MODULE_DIR.parent
+CONFIG_PATH = PROJECT_DIR / "config.yaml"
+ENV_PATH = PROJECT_DIR / ".env"
 
 
 class SettingsError(ValueError):

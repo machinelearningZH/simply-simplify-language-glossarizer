@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from _streamlit_glossarizer.settings import (
+from src.settings import (
     SettingsError,
     load_application_settings,
     load_openrouter_settings,
