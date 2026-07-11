@@ -22,3 +22,9 @@ dependencies = [
 
 [tool.uv]
 exclude-newer = "7 days"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.15.20",
+]
