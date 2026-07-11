@@ -50,6 +50,22 @@ class ApplicationSettings:
     limits: InputLimits
 
 
+@dataclass(frozen=True)
+class UISettings:
+    values: Mapping[str, str]
+
+    def text(self, key: str, **values: object) -> str:
+        """Return and optionally format one validated user-interface string."""
+        try:
+            template = self.values[key]
+        except KeyError as error:
+            raise SettingsError(f"Missing UI setting: {key}") from error
+        try:
+            return template.format(**values)
+        except (KeyError, ValueError) as error:
+            raise SettingsError(f"Invalid UI template: {key}") from error
+
+
 def _require_field(config: Mapping[str, object], name: str) -> object:
     try:
         return config[name]
@@ -183,3 +199,26 @@ def load_openrouter_settings(
 ) -> OpenRouterSettings:
     """Load only the OpenRouter section for callers that need provider settings."""
     return load_application_settings(config_path, env_path).openrouter
+
+
+def load_ui_settings(config_path: Path = CONFIG_PATH) -> UISettings:
+    """Load user-interface text without requiring provider credentials."""
+    try:
+        raw_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+        if not isinstance(raw_config, Mapping):
+            raise SettingsError("Configuration must be a mapping")
+        ui = raw_config["ui"]
+        if not isinstance(ui, Mapping):
+            raise SettingsError("ui must be a mapping")
+        invalid_keys = [key for key, value in ui.items() if not isinstance(value, str)]
+        if invalid_keys:
+            raise SettingsError(f"UI settings must be strings: {invalid_keys[0]}")
+        return UISettings(values=dict(ui))
+    except SettingsError:
+        raise
+    except OSError as error:
+        raise SettingsError(f"Unable to read configuration: {config_path}") from error
+    except yaml.YAMLError as error:
+        raise SettingsError(f"Invalid YAML configuration: {config_path}") from error
+    except KeyError as error:
+        raise SettingsError(f"Missing configuration field: {error.args[0]}") from error

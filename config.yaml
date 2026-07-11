@@ -13,3 +13,55 @@ limits:
   max_upload_bytes: 400000
   max_terms: 200
   max_term_chars: 200
+ui:
+  navigation_text: von Text
+  navigation_url: von URL
+  navigation_file: von Datei
+  navigation_section: Glossar erstellen
+  page_title: GlossarisiererZH
+  sidebar_warning: "⚠️ :red[**Achtung: Nutze die App nur für öffentliche, nicht sensible Daten, da diese auf externen Rechnern von Drittanbietern verarbeitet werden**] (OpenRouter, ausgewählte Modellanbieter, Jina AI usw.).<br><sub>Diese App liefert lediglich einen Entwurf. Überprüfe das Ergebnis immer und passe es an, wenn nötig. Aktuelle App-Version ist v0.2.0. Die letzte Aktualisierung war am 23.12.2025."
+  app_heading: "### 🤓 GlossarisiererZH"
+  app_description: Diese App findet schwer verständliche Begriffe in Texten und erstellt Erklärungen in Leichter Sprache für Glossareinträge.
+  text_input_label: Text zur Analyse eingeben
+  text_process_button: "Schritt 1: Begriffe erkennen"
+  file_input_label: Datei auswählen
+  file_input_help: Lade eine UTF-8-kodierte .txt-Datei mit dem zu verarbeitenden Text hoch.
+  file_process_button: "Schritt 1: .txt-Datei verarbeiten"
+  file_missing: Bitte wähle zuerst eine Datei aus.
+  file_too_large: "Die Datei ist zu gross. Maximal {max_bytes} Bytes sind erlaubt."
+  file_invalid_encoding: Die Datei muss UTF-8-kodiert sein.
+  url_input_label: URL eingeben
+  url_input_placeholder: https://zh.ch
+  url_process_button: "Schritt 1: URL verarbeiten"
+  url_reading_spinner: Text von Webseite lesen...
+  configuration_error: Die Anwendung ist nicht korrekt konfiguriert.
+  extracting_spinner: Begriffe aus dem Text extrahieren...
+  no_terms_found: Keine Begriffe gefunden.
+  terms_found: "{count} Begriffe gefunden."
+  edit_terms_heading: Begriffe bearbeiten
+  edit_terms_label: Begriffe bearbeiten, hinzufügen oder entfernen (ein Begriff pro Zeile)
+  generate_button: "Schritt 2: Erklärungen generieren"
+  generating_spinner: Erklärungen werden generiert...
+  generated_success: Erklärungen wurden generiert.
+  results_heading: Ergebnisse
+  excel_download: Excel herunterladen
+  csv_download: CSV herunterladen
+  reset_button: Neu starten
+  default_filename: glossar
+  text_filename: Glossar
+  provider_configuration_error: OpenRouter ist nicht korrekt konfiguriert. Bitte prüfe die Anwendungseinstellungen.
+  provider_request_error: OpenRouter konnte die Anfrage nicht verarbeiten. Bitte versuche es später erneut.
+  provider_unexpected_result: OpenRouter hat ein unerwartetes Ergebnis geliefert.
+  empty_text_error: Der Text ist leer.
+  text_too_long_error: "Der Text ist zu lang. Maximal {max_chars} Zeichen sind erlaubt."
+  empty_terms_error: Bitte gib mindestens einen Begriff ein.
+  too_many_terms_error: "Es sind maximal {max_terms} Begriffe erlaubt."
+  term_too_long_error: "Ein Begriff darf maximal {max_chars} Zeichen lang sein."
+  invalid_url_error: Bitte gib eine gültige HTTP- oder HTTPS-URL ein.
+  reader_too_large_error: Die gelesene Webseite ist zu gross.
+  reader_request_error: Die URL konnte nicht gelesen werden. Bitte versuche es später erneut.
+  reader_encoding_error: Die Webseite verwendet eine nicht unterstützte Kodierung.
+  term_column: Begriff
+  plain_explanation_column: Erklärung ohne Kontext
+  contextual_explanation_column: Erklärung mit Kontext
+  excel_sheet_name: Glossar

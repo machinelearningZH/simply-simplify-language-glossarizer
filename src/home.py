@@ -1,21 +1,27 @@
 import streamlit as st
 
-from_text = st.Page("from_text.py", title="von Text", icon=":material/description:")
-from_url = st.Page("from_url.py", title="von URL", icon=":material/web:")
-from_file = st.Page("from_file.py", title="von Datei", icon=":material/folder_open:")
+from settings import load_ui_settings
 
-pg = st.navigation({"Glossar erstellen": [from_text, from_url, from_file]})
+ui = load_ui_settings()
 st.set_page_config(
-    page_title="GlossarisiererZH",
+    page_title=ui.text("page_title"),
     page_icon="📖",
     layout="wide",
     initial_sidebar_state="expanded",
 )
+
+from_text = st.Page(
+    "from_text.py", title=ui.text("navigation_text"), icon=":material/description:"
+)
+from_url = st.Page(
+    "from_url.py", title=ui.text("navigation_url"), icon=":material/web:"
+)
+from_file = st.Page(
+    "from_file.py", title=ui.text("navigation_file"), icon=":material/folder_open:"
+)
+
+pg = st.navigation({ui.text("navigation_section"): [from_text, from_url, from_file]})
 pg.run()
 
-USER_WARNING = """
-⚠️ :red[**Achtung: Nutze die App nur für öffentliche, nicht sensible Daten, da diese auf externen Rechnern von Drittanbietern verarbeitet werden**] (OpenRouter, ausgewählte Modellanbieter, Jina AI usw.).<br><sub>Diese App liefert lediglich einen Entwurf. Überprüfe das Ergebnis immer und passe es an, wenn nötig. Aktuelle App-Version ist v0.2.0. Die letzte Aktualisierung war am 23.12.2025.
-""".strip()
-
 with st.sidebar:
-    st.caption(USER_WARNING, unsafe_allow_html=True)
+    st.caption(ui.text("sidebar_warning"), unsafe_allow_html=True)

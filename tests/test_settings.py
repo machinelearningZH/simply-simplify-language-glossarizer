@@ -6,6 +6,7 @@ from src.settings import (
     SettingsError,
     load_application_settings,
     load_openrouter_settings,
+    load_ui_settings,
 )
 
 
@@ -61,6 +62,23 @@ def test_load_application_settings_reads_reader_and_input_limits(tmp_path, monke
     assert settings.limits.max_upload_bytes == 200_000
     assert settings.limits.max_terms == 100
     assert settings.limits.max_term_chars == 150
+
+
+def test_load_ui_settings_reads_and_formats_text(tmp_path):
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text('ui:\n  terms_found: "{count} terms"\n', encoding="utf-8")
+
+    settings = load_ui_settings(config_path)
+
+    assert settings.text("terms_found", count=3) == "3 terms"
+
+
+def test_load_ui_settings_rejects_non_string_values(tmp_path):
+    config_path = tmp_path / "config.yaml"
+    config_path.write_text("ui:\n  page_title: 42\n", encoding="utf-8")
+
+    with pytest.raises(SettingsError, match="must be strings"):
+        load_ui_settings(config_path)
 
 
 def test_load_openrouter_settings_uses_module_relative_env_file(tmp_path, monkeypatch):

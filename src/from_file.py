@@ -2,35 +2,35 @@ import streamlit as st
 
 from ui_glossary import render_glossary_workflow, set_current_source
 from settings import SettingsError
-from utils_glossary import get_application_runtime
+from utils_glossary import get_application_runtime, get_ui_settings
 
+ui = get_ui_settings()
 
-st.markdown("### 🤓 GlossarisiererZH")
-st.markdown("""
-Diese App findet schwer verständliche Begriffe in Texten und erstellt Erklärungen in Leichter Sprache für Glossareinträge.
-""")
+st.markdown(ui.text("app_heading"))
+st.markdown(ui.text("app_description"))
 
 uploaded_file = st.file_uploader(
-    "Datei auswählen",
+    ui.text("file_input_label"),
     type=["txt"],
-    help="Lade eine UTF-8-kodierte .txt-Datei mit dem zu verarbeitenden Text hoch.",
+    help=ui.text("file_input_help"),
 )
-if st.button("Schritt 1: .txt-Datei verarbeiten", key="from_file_process"):
+if st.button(ui.text("file_process_button"), key="from_file_process"):
     if uploaded_file is None:
-        st.error("Bitte wähle zuerst eine Datei aus.")
+        st.error(ui.text("file_missing"))
     else:
         try:
             settings, _ = get_application_runtime()
             if uploaded_file.size > settings.limits.max_upload_bytes:
                 raise ValueError(
-                    "Die Datei ist zu gross. "
-                    f"Maximal {settings.limits.max_upload_bytes} Bytes sind erlaubt."
+                    ui.text(
+                        "file_too_large", max_bytes=settings.limits.max_upload_bytes
+                    )
                 )
             content = uploaded_file.getvalue().decode("utf-8")
         except UnicodeDecodeError:
-            st.error("Die Datei muss UTF-8-kodiert sein.")
+            st.error(ui.text("file_invalid_encoding"))
         except SettingsError:
-            st.error("Die Anwendung ist nicht korrekt konfiguriert.")
+            st.error(ui.text("configuration_error"))
         except ValueError as error:
             st.error(str(error))
         else:

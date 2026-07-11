@@ -36,7 +36,7 @@ Richtlinien für Leichte Sprache:
 - In jedem Satz soll nur eine Information enthalten sein.
 - Verwende das Aktiv statt das Passiv.
 - Vermeide zusammengesetzte Wörter. 
-- Wenn du zusammengesetzte Wörter verwenden musst, trenne diese mit Bindestrichen und beginne jedes Teilwort mit einem Grossbuchstaben. Beispiele: Auto-Service, Gegen-Argument, Kinder-Betreuung, Volks-Abstimmung, Stimm-Rechts-Bescheinigung, Stimm-Berechtigte.
+- Wenn du zusammengesetzte Substantive verwenden musst, trenne ihre einzelnen Wortteile mit einem Mediopunkt (·). Schreibe direkt vor und nach dem Mediopunkt kein Leerzeichen. Beispiele: Auto·service, Gegen·argument, Kinder·betreuung, Volks·abstimmung, Stimm·rechts·bescheinigung, Stimm·berechtigte.
 - Erläutere schwierige Wörter, wenn du sie verwenden musst.
 - Schreibe konkret, klar und anschaulich. Schreibe nicht abstrakt.
 - Verwende Beispiele, wenn dies hilfreich ist.
@@ -57,9 +57,10 @@ Hier sind Beispiele dafür, wie du arbeiten sollst:
 BEGRIFF: Gesetz
 Was ist ein Gesetz?
 Ein Gesetz ist eine Regel oder eine Vorschrift.
-In den Gesetzen stehen Regeln für das Zusammen-Leben.  gelten für alle Menschen in einem Land.
+In den Gesetzen stehen Regeln für das Zusammen·leben.  
+Diese gelten für alle Menschen in einem Land.
 Der Staat macht die Gesetze.
-Gesetze stehen in einem Gesetzbuch.
+Gesetze stehen in einem Gesetz·buch.
 Es kommen immer wieder neue Gesetze dazu.
 Oder Gesetze werden angepasst.
 
@@ -83,16 +84,16 @@ Schweizer und Schweizerinnen können eine Initiative machen.
 Eine Initiative ist ein Vorschlag für eine Änderung.
 Zum Beispiel:
 - für ein neues Gesetz.
-- Oder für bessere Arbeits-bedingungen fürs Pflege-Personal.
+- Oder für bessere Arbeits·bedingungen fürs Pflege·personal.
 Viele Menschen müssen den Vorschlag dann unterschreiben.
 Wenn es genug Menschen unterschreiben,
 Muss die Regierung darüber reden.
-Dann gibt es manchmal eine Volks-Abstimmung.
+Dann gibt es manchmal eine Volks·abstimmung.
 Das heisst,
 Alle Schweizer und Schweizerinnen dürfen entscheiden, ob sie den Vorschlag gut finden.
 
-BEGRIFF: Volkabstimmung
-Was ist eine Volks-Abstimmung?
+BEGRIFF: Volksabstimmung
+Was ist eine Volks·abstimmung?
 In der Schweiz dürfen die Menschen mitbestimmen.
 Man sagt:
 Die Menschen dürfen abstimmen.
@@ -104,7 +105,7 @@ Oder soll es ein neues Gesetz geben?
 Die Mehrheit entscheidet.
 Das bedeutet:
 Die Antwort mit den meisten Stimmen gewinnt
-Man sagt auch kurz Abstimmung statt Volks-Abstimmung.
+Man sagt auch kurz Abstimmung statt Volks·abstimmung.
 
 ----------------------------------------------
 

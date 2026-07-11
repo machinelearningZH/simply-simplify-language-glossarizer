@@ -21,7 +21,9 @@ from settings import (
     OpenRouterSettings,
     ReaderSettings,
     SettingsError,
+    UISettings,
     load_application_settings,
+    load_ui_settings,
 )
 from utils_prompts_glossary import (
     CREATE_GLOSSARY,
@@ -105,6 +107,12 @@ def get_application_runtime() -> tuple[ApplicationSettings, OpenAI]:
     return settings, create_openrouter_client(settings.openrouter)
 
 
+@st.cache_resource
+def get_ui_settings() -> UISettings:
+    """Load and cache validated user-interface text."""
+    return load_ui_settings()
+
+
 def get_openrouter_runtime() -> tuple[OpenRouterSettings, OpenAI]:
     """Return the provider-specific portion of the application runtime."""
     settings, client = get_application_runtime()
@@ -152,8 +160,7 @@ def _call_openrouter(
             extra={"error_type": type(error).__name__},
         )
         raise ProviderCallError(
-            "OpenRouter konnte die Anfrage nicht verarbeiten. "
-            "Bitte versuche es später erneut."
+            get_ui_settings().text("provider_request_error")
         ) from None
 
 
@@ -167,8 +174,7 @@ def call_openrouter(
     except SettingsError:
         logger.error("OpenRouter configuration is invalid")
         raise ProviderCallError(
-            "OpenRouter ist nicht korrekt konfiguriert. "
-            "Bitte prüfe die Anwendungseinstellungen."
+            get_ui_settings().text("provider_configuration_error")
         ) from None
     return _call_openrouter(prompt, settings, client, response_format)
 
@@ -176,10 +182,12 @@ def call_openrouter(
 def validate_text(text: str, limits: InputLimits) -> str:
     """Validate source text before it is included in a provider prompt."""
     if not text.strip():
-        raise InputLimitError("Der Text ist leer.")
+        raise InputLimitError(get_ui_settings().text("empty_text_error"))
     if len(text) > limits.max_input_chars:
         raise InputLimitError(
-            f"Der Text ist zu lang. Maximal {limits.max_input_chars} Zeichen sind erlaubt."
+            get_ui_settings().text(
+                "text_too_long_error", max_chars=limits.max_input_chars
+            )
         )
     return text
 
@@ -188,12 +196,16 @@ def validate_terms(terms: list[str], limits: InputLimits) -> list[str]:
     """Normalize and bound user-editable glossary terms."""
     normalized = list(dict.fromkeys(term.strip() for term in terms if term.strip()))
     if not normalized:
-        raise InputLimitError("Bitte gib mindestens einen Begriff ein.")
+        raise InputLimitError(get_ui_settings().text("empty_terms_error"))
     if len(normalized) > limits.max_terms:
-        raise InputLimitError(f"Es sind maximal {limits.max_terms} Begriffe erlaubt.")
+        raise InputLimitError(
+            get_ui_settings().text("too_many_terms_error", max_terms=limits.max_terms)
+        )
     if any(len(term) > limits.max_term_chars for term in normalized):
         raise InputLimitError(
-            f"Ein Begriff darf maximal {limits.max_term_chars} Zeichen lang sein."
+            get_ui_settings().text(
+                "term_too_long_error", max_chars=limits.max_term_chars
+            )
         )
     return normalized
 
@@ -227,15 +239,13 @@ def extract_terms_from_text(text: str) -> list[str]:
         settings, client = get_application_runtime()
     except SettingsError:
         logger.error("Application configuration is invalid")
-        raise ProviderCallError(
-            "Die Anwendung ist nicht korrekt konfiguriert."
-        ) from None
+        raise ProviderCallError(get_ui_settings().text("configuration_error")) from None
     validate_text(text, settings.limits)
     result = _call_openrouter(
         EXTRACT_TERMS.format(TEXT=text), settings.openrouter, client, TermList
     )
     if not isinstance(result, TermList):
-        raise ProviderCallError("OpenRouter hat ein unerwartetes Ergebnis geliefert.")
+        raise ProviderCallError(get_ui_settings().text("provider_unexpected_result"))
     return sorted({term.term.strip() for term in result.terms if term.term.strip()})
 
 
@@ -247,9 +257,7 @@ def create_explanations(
         application_settings, client = get_application_runtime()
     except SettingsError:
         logger.error("Application configuration is invalid")
-        raise ProviderCallError(
-            "Die Anwendung ist nicht korrekt konfiguriert."
-        ) from None
+        raise ProviderCallError(get_ui_settings().text("configuration_error")) from None
     normalized_terms = validate_terms(terms, application_settings.limits)
     if text is not None:
         validate_text(text, application_settings.limits)
@@ -283,7 +291,7 @@ def create_explanations(
     if not isinstance(plain_result, ExplanationList) or (
         context_result is not None and not isinstance(context_result, ExplanationList)
     ):
-        raise ProviderCallError("OpenRouter hat ein unerwartetes Ergebnis geliefert.")
+        raise ProviderCallError(get_ui_settings().text("provider_unexpected_result"))
     return plain_result, context_result
 
 
@@ -291,7 +299,7 @@ def convert_url_to_markdown(url: str, settings: ReaderSettings) -> str:
     """Convert a public HTTP(S) URL to bounded Markdown through Jina Reader."""
     parsed = urlparse(url)
     if parsed.scheme not in {"http", "https"} or not parsed.netloc:
-        raise ReaderError("Bitte gib eine gültige HTTP- oder HTTPS-URL ein.")
+        raise ReaderError(get_ui_settings().text("invalid_url_error"))
 
     try:
         with requests.get(
@@ -304,19 +312,15 @@ def convert_url_to_markdown(url: str, settings: ReaderSettings) -> str:
             for chunk in response.iter_content(chunk_size=64 * 1024):
                 content.extend(chunk)
                 if len(content) > settings.max_response_bytes:
-                    raise ReaderError("Die gelesene Webseite ist zu gross.")
+                    raise ReaderError(get_ui_settings().text("reader_too_large_error"))
     except requests.RequestException:
         logger.error("Jina Reader request failed")
-        raise ReaderError(
-            "Die URL konnte nicht gelesen werden. Bitte versuche es später erneut."
-        ) from None
+        raise ReaderError(get_ui_settings().text("reader_request_error")) from None
 
     try:
         return content.decode(response.encoding or "utf-8")
     except UnicodeDecodeError:
-        raise ReaderError(
-            "Die Webseite verwendet eine nicht unterstützte Kodierung."
-        ) from None
+        raise ReaderError(get_ui_settings().text("reader_encoding_error")) from None
 
 
 def build_glossary_dataframe(
@@ -336,17 +340,21 @@ def build_glossary_dataframe(
         else {}
     )
     terms = sorted(plain.keys() | contextual.keys())
+    ui = get_ui_settings()
+    term_column = ui.text("term_column")
+    plain_column = ui.text("plain_explanation_column")
+    contextual_column = ui.text("contextual_explanation_column")
     rows = [
         {
-            "Begriff": term,
-            "Erklärung ohne Kontext": plain.get(term),
-            "Erklärung mit Kontext": contextual.get(term),
+            term_column: term,
+            plain_column: plain.get(term),
+            contextual_column: contextual.get(term),
         }
         for term in terms
     ]
     frame = pd.DataFrame(rows)
-    if not contextual and "Erklärung mit Kontext" in frame:
-        frame.drop(columns="Erklärung mit Kontext", inplace=True)
+    if not contextual and contextual_column in frame:
+        frame.drop(columns=contextual_column, inplace=True)
     return frame
 
 
@@ -366,7 +374,9 @@ def make_export_data(frame: pd.DataFrame) -> tuple[bytes, bytes]:
         engine="xlsxwriter",
         engine_kwargs={"options": {"strings_to_formulas": False}},
     ) as writer:
-        safe_frame.to_excel(writer, index=False, sheet_name="Glossar")
+        safe_frame.to_excel(
+            writer, index=False, sheet_name=get_ui_settings().text("excel_sheet_name")
+        )
     csv_buffer = io.StringIO()
     safe_frame.to_csv(csv_buffer, index=False)
     return excel_buffer.getvalue(), csv_buffer.getvalue().encode("utf-8")
@@ -382,7 +392,7 @@ def zurich_timestamp(now: datetime.datetime | None = None) -> str:
     return current.strftime("%Y%m%d_%H%M")
 
 
-def safe_filename_stem(value: str, fallback: str = "glossar") -> str:
+def safe_filename_stem(value: str, fallback: str) -> str:
     """Create a conservative download filename stem from untrusted input."""
     stem = Path(value).stem
     cleaned = re.sub(r"[^\w.-]+", "_", stem, flags=re.UNICODE).strip("._")
