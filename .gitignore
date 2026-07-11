@@ -178,3 +178,4 @@ cython_debug/
 
 # Additional files to ignore for this project
 .DS_Store
+docs/

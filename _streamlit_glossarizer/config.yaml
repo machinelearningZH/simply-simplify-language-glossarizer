@@ -4,3 +4,12 @@ openrouter:
   max_output_tokens: 8192
   timeout_seconds: 60.0
   max_retries: 2
+reader:
+  base_url: https://r.jina.ai/
+  timeout_seconds: 30.0
+  max_response_bytes: 2000000
+limits:
+  max_input_chars: 100000
+  max_upload_bytes: 400000
+  max_terms: 200
+  max_term_chars: 200

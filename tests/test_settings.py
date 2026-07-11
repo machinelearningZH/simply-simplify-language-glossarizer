@@ -2,7 +2,11 @@ from pathlib import Path
 
 import pytest
 
-from _streamlit_glossarizer.settings import SettingsError, load_openrouter_settings
+from _streamlit_glossarizer.settings import (
+    SettingsError,
+    load_application_settings,
+    load_openrouter_settings,
+)
 
 
 def write_config(path: Path, *, model: str = "provider/model") -> None:
@@ -13,6 +17,15 @@ def write_config(path: Path, *, model: str = "provider/model") -> None:
   max_output_tokens: 2048
   timeout_seconds: 30.0
   max_retries: 3
+reader:
+  base_url: https://r.jina.ai/
+  timeout_seconds: 15.0
+  max_response_bytes: 1000000
+limits:
+  max_input_chars: 50000
+  max_upload_bytes: 200000
+  max_terms: 100
+  max_term_chars: 150
 """,
         encoding="utf-8",
     )
@@ -32,6 +45,22 @@ def test_load_openrouter_settings_reads_yaml_and_environment(tmp_path, monkeypat
     assert settings.timeout_seconds == 30.0
     assert settings.max_retries == 3
     assert "secret-key" not in repr(settings)
+
+
+def test_load_application_settings_reads_reader_and_input_limits(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.yaml"
+    write_config(config_path)
+    monkeypatch.setenv("OPENROUTER_API_KEY", "secret-key")
+
+    settings = load_application_settings(config_path, tmp_path / ".env")
+
+    assert settings.reader.base_url == "https://r.jina.ai/"
+    assert settings.reader.timeout_seconds == 15.0
+    assert settings.reader.max_response_bytes == 1_000_000
+    assert settings.limits.max_input_chars == 50_000
+    assert settings.limits.max_upload_bytes == 200_000
+    assert settings.limits.max_terms == 100
+    assert settings.limits.max_term_chars == 150
 
 
 def test_load_openrouter_settings_uses_module_relative_env_file(tmp_path, monkeypatch):
