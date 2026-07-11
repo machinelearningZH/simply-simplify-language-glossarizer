@@ -71,7 +71,7 @@ def test_call_openrouter_returns_plain_text(monkeypatch):
 
 
 def test_call_openrouter_reports_configuration_error_without_secret(monkeypatch):
-    error = SettingsError("OPENROUTER_API_KEY fehlt")
+    error = SettingsError("OPENROUTER_API_KEY fehlt: secret-key")
     monkeypatch.setattr(
         utils_glossary, "get_openrouter_runtime", Mock(side_effect=error)
     )
@@ -80,7 +80,10 @@ def test_call_openrouter_reports_configuration_error_without_secret(monkeypatch)
 
     assert utils_glossary.call_openrouter("prompt") is None
     message = streamlit_error.call_args.args[0]
-    assert "OPENROUTER_API_KEY" in message
+    assert message == (
+        "OpenRouter ist nicht korrekt konfiguriert. "
+        "Bitte prüfe die Anwendungseinstellungen."
+    )
     assert "secret-key" not in message
 
 
@@ -88,7 +91,7 @@ def test_call_openrouter_reports_provider_error(monkeypatch):
     settings = make_settings()
     client = Mock()
     client.chat.completions.create.side_effect = openai.OpenAIError(
-        "provider unavailable"
+        "Authorization: Bearer secret-key; provider body: private prompt"
     )
     monkeypatch.setattr(
         utils_glossary, "get_openrouter_runtime", lambda: (settings, client)
@@ -97,4 +100,10 @@ def test_call_openrouter_reports_provider_error(monkeypatch):
     monkeypatch.setattr(utils_glossary.st, "error", streamlit_error)
 
     assert utils_glossary.call_openrouter("prompt") is None
-    assert "OpenRouter" in streamlit_error.call_args.args[0]
+    message = streamlit_error.call_args.args[0]
+    assert message == (
+        "OpenRouter konnte die Anfrage nicht verarbeiten. "
+        "Bitte versuche es später erneut."
+    )
+    assert "secret-key" not in message
+    assert "private prompt" not in message

@@ -88,8 +88,11 @@ def call_openrouter(
         return (
             response_format.model_validate_json(content) if response_format else content
         )
-    except SettingsError as error:
-        st.error(f"OpenRouter-Konfiguration ungültig: {error}")
+    except SettingsError:
+        st.error(
+            "OpenRouter ist nicht korrekt konfiguriert. "
+            "Bitte prüfe die Anwendungseinstellungen."
+        )
         return None
     except (
         openai.OpenAIError,
@@ -97,8 +100,11 @@ def call_openrouter(
         ValueError,
         IndexError,
         AttributeError,
-    ) as error:
-        st.error(f"Fehler beim Aufruf von OpenRouter: {error}")
+    ):
+        st.error(
+            "OpenRouter konnte die Anfrage nicht verarbeiten. "
+            "Bitte versuche es später erneut."
+        )
         return None
 
 
