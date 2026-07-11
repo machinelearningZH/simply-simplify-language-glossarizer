@@ -1,0 +1,84 @@
+from pathlib import Path
+
+import pytest
+
+from _streamlit_glossarizer.settings import SettingsError, load_openrouter_settings
+
+
+def write_config(path: Path, *, model: str = "provider/model") -> None:
+    path.write_text(
+        f"""openrouter:
+  base_url: https://openrouter.ai/api/v1
+  model: {model}
+  temperature: 0.1
+  max_output_tokens: 2048
+  timeout_seconds: 30.0
+  max_retries: 3
+""",
+        encoding="utf-8",
+    )
+
+
+def test_load_openrouter_settings_reads_yaml_and_environment(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.yaml"
+    write_config(config_path)
+    monkeypatch.setenv("OPENROUTER_API_KEY", "secret-key")
+
+    settings = load_openrouter_settings(config_path, tmp_path / ".env")
+
+    assert settings.api_key == "secret-key"
+    assert settings.base_url == "https://openrouter.ai/api/v1"
+    assert settings.model == "provider/model"
+    assert settings.temperature == 0.1
+    assert settings.max_output_tokens == 2048
+    assert settings.timeout_seconds == 30.0
+    assert settings.max_retries == 3
+    assert "secret-key" not in repr(settings)
+
+
+def test_load_openrouter_settings_uses_module_relative_env_file(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.yaml"
+    env_path = tmp_path / ".env"
+    write_config(config_path)
+    env_path.write_text("OPENROUTER_API_KEY=env-file-key\n", encoding="utf-8")
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+
+    settings = load_openrouter_settings(config_path, env_path)
+
+    assert settings.api_key == "env-file-key"
+
+
+def test_load_openrouter_settings_rejects_missing_key(tmp_path, monkeypatch):
+    config_path = tmp_path / "config.yaml"
+    write_config(config_path)
+    monkeypatch.delenv("OPENROUTER_API_KEY", raising=False)
+
+    with pytest.raises(SettingsError, match="OPENROUTER_API_KEY"):
+        load_openrouter_settings(config_path, tmp_path / "missing.env")
+
+
+@pytest.mark.parametrize(
+    ("replacement", "message"),
+    [
+        ("temperature: -1", "temperature"),
+        ("max_output_tokens: 0", "max_output_tokens"),
+        ("timeout_seconds: 0", "timeout_seconds"),
+        ("max_retries: -1", "max_retries"),
+    ],
+)
+def test_load_openrouter_settings_rejects_invalid_values(
+    tmp_path, monkeypatch, replacement, message
+):
+    config_path = tmp_path / "config.yaml"
+    write_config(config_path)
+    text = config_path.read_text(encoding="utf-8")
+    key = replacement.split(":", maxsplit=1)[0]
+    text = "\n".join(
+        replacement if line.strip().startswith(f"{key}:") else line
+        for line in text.splitlines()
+    )
+    config_path.write_text(text, encoding="utf-8")
+    monkeypatch.setenv("OPENROUTER_API_KEY", "secret-key")
+
+    with pytest.raises(SettingsError, match=message):
+        load_openrouter_settings(config_path, tmp_path / ".env")
