@@ -22,7 +22,6 @@ class OpenRouterSettings:
     api_key: str = field(repr=False)
     base_url: str
     model: str
-    temperature: float
     max_output_tokens: int
     timeout_seconds: float
     max_retries: int
@@ -48,15 +47,6 @@ def _validate_model(value: object) -> str:
     if not isinstance(value, str) or not value.strip():
         raise SettingsError("model must be a non-empty string")
     return value
-
-
-def _validate_temperature(value: object) -> float:
-    if isinstance(value, bool) or not isinstance(value, int | float):
-        raise SettingsError("temperature must be a number from 0 to 2")
-    result = float(value)
-    if not isfinite(result) or not 0 <= result <= 2:
-        raise SettingsError("temperature must be a number from 0 to 2")
-    return result
 
 
 def _validate_positive_integer(value: object, name: str) -> int:
@@ -105,9 +95,6 @@ def load_openrouter_settings(
             api_key=api_key,
             base_url=_validate_base_url(_require_field(openrouter, "base_url")),
             model=_validate_model(_require_field(openrouter, "model")),
-            temperature=_validate_temperature(
-                _require_field(openrouter, "temperature")
-            ),
             max_output_tokens=_validate_positive_integer(
                 _require_field(openrouter, "max_output_tokens"), "max_output_tokens"
             ),

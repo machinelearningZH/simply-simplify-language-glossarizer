@@ -172,8 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-_streamlit_glossarizer/.DS_Store
-.DS_Store
 
 # Local Git worktrees
 .worktrees/
+
+# Additional files to ignore for this project
+.DS_Store

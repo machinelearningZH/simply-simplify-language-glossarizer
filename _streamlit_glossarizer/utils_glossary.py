@@ -69,7 +69,6 @@ def call_openrouter(
             "model": settings.model,
             "messages": [{"role": "user", "content": prompt}],
             "max_tokens": settings.max_output_tokens,
-            "temperature": settings.temperature,
         }
         if response_format is not None:
             request["response_format"] = {

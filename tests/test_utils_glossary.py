@@ -12,7 +12,6 @@ def make_settings() -> OpenRouterSettings:
         api_key="secret-key",
         base_url="https://openrouter.ai/api/v1",
         model="google/gemini-3-flash-preview",
-        temperature=0.0,
         max_output_tokens=8192,
         timeout_seconds=60.0,
         max_retries=2,
@@ -52,7 +51,7 @@ def test_call_openrouter_requests_and_validates_structured_output(monkeypatch):
     assert kwargs["model"] == settings.model
     assert kwargs["messages"] == [{"role": "user", "content": "prompt"}]
     assert kwargs["max_tokens"] == settings.max_output_tokens
-    assert kwargs["temperature"] == settings.temperature
+    assert "temperature" not in kwargs
     assert kwargs["response_format"]["type"] == "json_schema"
     assert kwargs["response_format"]["json_schema"]["strict"] is True
 

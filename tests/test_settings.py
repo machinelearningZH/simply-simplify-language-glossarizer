@@ -10,7 +10,6 @@ def write_config(path: Path, *, model: str = "provider/model") -> None:
         f"""openrouter:
   base_url: https://openrouter.ai/api/v1
   model: {model}
-  temperature: 0.1
   max_output_tokens: 2048
   timeout_seconds: 30.0
   max_retries: 3
@@ -29,7 +28,6 @@ def test_load_openrouter_settings_reads_yaml_and_environment(tmp_path, monkeypat
     assert settings.api_key == "secret-key"
     assert settings.base_url == "https://openrouter.ai/api/v1"
     assert settings.model == "provider/model"
-    assert settings.temperature == 0.1
     assert settings.max_output_tokens == 2048
     assert settings.timeout_seconds == 30.0
     assert settings.max_retries == 3
@@ -69,11 +67,6 @@ def test_load_openrouter_settings_reports_invalid_yaml_concisely(tmp_path, monke
 @pytest.mark.parametrize(
     ("replacement", "message"),
     [
-        ("temperature: -1", "temperature"),
-        ("temperature: 3", "temperature"),
-        ("temperature: true", "temperature"),
-        ("temperature: .nan", "temperature"),
-        ("temperature: .inf", "temperature"),
         ("max_output_tokens: 0", "max_output_tokens"),
         ("max_output_tokens: 1.5", "max_output_tokens"),
         ("max_output_tokens: true", "max_output_tokens"),
