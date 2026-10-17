@@ -1,8 +1,8 @@
 openrouter:
   base_url: https://openrouter.ai/api/v1
-  model: google/gemini-3.5-flash
-  max_output_tokens: 8192
-  timeout_seconds: 60.0
+  model: google/gemini-3.8-flash
+  max_output_tokens: 16000
+  timeout_seconds: 120.0
   max_retries: 2
 reader:
   base_url: https://r.jina.ai/
